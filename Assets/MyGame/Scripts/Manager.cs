@@ -6,6 +6,7 @@ using TMPro;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 using System.Linq;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
@@ -20,14 +21,14 @@ public class Manager : MonoBehaviour
 
     // Schritt 3: Benutzereingaben und Überprüfung
     // Zeichnen Sie ensprechende Platzhalter für das Geheimwort.
-    // Implementieren Sie ein Inputfield, damit der Benutzer Buchstaben eingeben kann.
+    // Geben Sie dem Nutzer die Möglichkeit Buchstaben einzugeben.
     // Überprüfen Sie, ob der ausgewählte Buchstabe im geheimen Wort vorkommt.
     // Zeigen Sie den Buchstaben an wenn er korrekt war.
     // Aktualisieren Sie den Galgenzustand wenn der Buchstabe inkorrekt war.
 
     // Schritt 4: Galgenzustand und Endbedingungen
     // Zeichnen Sie den Galgen entsprechend dem Fortschritt des Benutzers.
-    // Implementieren Sie die Logik für das Gewinnen oder Verlieren des Spiels basierend auf dem Galgenzustand (7 Zustände) und der Anzahl der falschen Buchstaben.
+    // Implementieren Sie die Logik für das Gewinnen oder Verlieren des Spiels basierend auf dem Galgenzustand (5 Zustände) und der Anzahl der falschen Buchstaben.
     // Geben Sie entsprechende Nachrichten aus, wenn das Spiel gewonnen oder verloren wurde.
 
     // Schritt 5: Benutzeroberfläche
@@ -37,7 +38,8 @@ public class Manager : MonoBehaviour
     public Text wordDisplayText;
     public Text attemptsText;
     public Text guessedLettersText;
-
+    public int win;
+    
     private string[] words = {
         "Auto", "Flugzeug", "Schiff", "Zug", "Fahrrad",
         "Haus", "Wolke", "Sonne", "Mond", "Sterne",
@@ -63,9 +65,10 @@ public class Manager : MonoBehaviour
     }; // Hier können Sie Ihre eigenen Wörter hinzufügen
     private string secretWord;
     private char[] guessedLetters;
-    private int attemptsLeft = 6;
+    private int attemptsLeft = 5;
     private string guessedLettersString = "";
 
+    public GameObject[] hangman;
     void Start()
     {
         // Wähle ein zufälliges Wort aus dem Array aus
@@ -114,9 +117,11 @@ public class Manager : MonoBehaviour
 
         if (!found)
         {
+            hangman[5 - attemptsLeft].SetActive(true);
             attemptsLeft--;
             guessedLettersString += letter + " ";
             Debug.Log("Letter not found: " + letter);
+            
         }
 
         UpdateWordDisplay();
@@ -126,10 +131,17 @@ public class Manager : MonoBehaviour
         if (attemptsLeft == 0)
         {
             Debug.Log("Game Over!");
+            SceneManager.LoadScene("Start", LoadSceneMode.Single);
+            win = 0;
+            PlayerPrefs.SetInt("win", win);
         }
         else if (secretWord.Equals(new string(guessedLetters)))
         {
             Debug.Log("You Win!");
+           
+            win = 1;
+            PlayerPrefs.SetInt("win", win);
+            SceneManager.LoadScene("Start", LoadSceneMode.Single);
         }
     }
 
