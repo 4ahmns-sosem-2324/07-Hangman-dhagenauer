@@ -39,11 +39,18 @@ classDiagram
         - attemptsLeft: int
         - guessedLettersString: string
         + hangman: GameObject[]
-        - Start(): void
-        - Update(): void
-        - CheckLetter(char letter): void
-        - UpdateWordDisplay(): void
-        - UpdateAttemptsDisplay(): void
-        - UpdateGuessedLettersDisplay(): void
+        - Start() void
+        - Update() void
+        - CheckLetter(char letter) void
+        - UpdateWordDisplay() void
+        - UpdateAttemptsDisplay() void
+        - UpdateGuessedLettersDisplay() void
+    }
+class StartManager {
+        + win: int
+        + winText: Text
+        - Start() void
+        - Update() void
+        + StartButton() void
     }
     ```
