@@ -26,6 +26,7 @@
 ```mermaid
 classDiagram
     MonoBehaviour <|-- Manager
+    MonoBehaviour <|-- StartManager
    
     
      class Manager {
